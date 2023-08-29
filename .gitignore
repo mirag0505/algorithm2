@@ -1,0 +1,38 @@
+# Отклонить все файлы .bin и .obj
+**/bin/
+**/obj/
+
+# Отклонить все файлы .user, .suo и .userprefs
+*.suo
+*.user
+*.userprefs
+*.sln.docstates
+
+# Отклонить файлы .csproj, .vbproj, .vcxproj и .vcproj, включая файлы .user и .suo
+*.*proj.user
+*.*proj.suo
+
+# Отклонить все файлы .cache
+*.cache
+*.*proj[.*]cache
+
+# Отклонить все файлы .bak
+*.bak
+
+# Отклонить все файлы .ncrunch
+*.ncrunch*
+.*crunch*.local.xml
+
+# Отклонить nunit-*.xml
+nunit-*.xml
+
+# Исключить файлы Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Исключить файлы Visual Studio 2015
+.vs/
+
+# Исключить логи сборки
+Build/
+.fake
