@@ -286,4 +286,14 @@ public class UnitTest1
 
         Assert.Equal(1, tree.LeafCount());
     }
+
+    [Fact]
+    public void LeafCounByOneNode()
+    {
+        SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
+
+        SimpleTree<int> tree = new SimpleTree<int>(node);
+
+        Assert.Equal(1, tree.LeafCount());
+    }
 }
