@@ -126,13 +126,11 @@ namespace AlgorithmsDataStructures2
             if (Node == null) return 0;
 
             int count = 1;
+            if (Node.Children == null) return count;
 
-            if (Node.Children != null)
+            foreach (SimpleTreeNode<T> child in Node.Children)
             {
-                foreach (SimpleTreeNode<T> child in Node.Children)
-                {
-                    count += CountNodesRecursively(child);
-                }
+                count += CountNodesRecursively(child);
             }
 
             return count;
