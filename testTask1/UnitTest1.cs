@@ -8,7 +8,7 @@ public class UnitTest1
     public void CreateEmptyTree()
     {
         SimpleTree<int> tree = new SimpleTree<int>(null);
-        // Assert.Equal(0, tree.Count());
+        Assert.Equal(0, tree.Count());
         Assert.Equal(null, tree.Root);
     }
 
@@ -17,13 +17,20 @@ public class UnitTest1
     {
         SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(1, null);
         SimpleTree<int> tree1 = new SimpleTree<int>(node1);
-        // Assert.Equal(1, tree1.Count());
+        Assert.Equal(1, tree1.Count());
         Assert.Equal(node1, tree1.Root);
 
         SimpleTreeNode<string> node2 = new SimpleTreeNode<string>("abc", null);
         SimpleTree<string> tree2 = new SimpleTree<string>(node2);
-        // Assert.Equal(1, tree2.Count());
+        Assert.Equal(1, tree2.Count());
         Assert.Equal(node2, tree2.Root);
+
+        SimpleTreeNode<string> node3 = new SimpleTreeNode<string>("abc", null);
+        SimpleTreeNode<string> node4 = new SimpleTreeNode<string>("abc", node3);
+        SimpleTree<string> tree3 = new SimpleTree<string>(node3);
+        Assert.Equal(node3, tree3.Root);
+        Assert.Equal(node3.Children[0], node4);
+        Assert.Equal(2, tree3.Count());
     }
 
     [Fact]
@@ -35,9 +42,17 @@ public class UnitTest1
 
         SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(1, null);
         tree.AddChild(null, node1);
-        // Assert.Equal(1, tree.Count());
+
+        Assert.Equal(1, tree.Count());
         Assert.Equal(node1, tree.Root);
         Assert.Equal(1, node1.NodeValue);
+
+        SimpleTreeNode<int> node2 = new SimpleTreeNode<int>(2, null);
+        tree.AddChild(node1, node2);
+
+        Assert.Equal(2, tree.Count());
+        Assert.Equal(node2, node1.Children[0]);
+        Assert.Equal(2, node2.NodeValue);
     }
 
     [Fact]
@@ -45,12 +60,12 @@ public class UnitTest1
     {
         SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
         SimpleTree<int> tree = new SimpleTree<int>(node);
-        // Assert.Equal(1, tree.Count());
+        Assert.Equal(1, tree.Count());
         Assert.Equal(1, node.NodeValue);
 
         SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(2, null);
         tree.AddChild(node, node1);
-        // Assert.Equal(2, tree.Count());
+        Assert.Equal(2, tree.Count());
         Assert.Equal(node, tree.Root);
         Assert.Equal(node.Children[0], node1);
         Assert.Equal(2, node1.NodeValue);
@@ -61,22 +76,22 @@ public class UnitTest1
     {
         SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
         SimpleTree<int> tree = new SimpleTree<int>(node);
-        // Assert.Equal(1, tree.Count());
+        Assert.Equal(1, tree.Count());
         Assert.Equal(node, tree.Root);
 
         SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(2, null);
         tree.AddChild(node, node1);
-        // Assert.Equal(2, tree.Count());
+        Assert.Equal(2, tree.Count());
 
         Assert.Equal(node.Children[0], node1);
 
         tree.DeleteNode(node1);
-        // Assert.Equal(1, tree.Count());
+        Assert.Equal(1, tree.Count());
         Assert.Equal(node, tree.Root);
         Assert.Equal(null, node.Children);
 
         tree.DeleteNode(node);
-        // Assert.Equal(0, tree.Count());
+        Assert.Equal(0, tree.Count());
         Assert.Null(tree.Root);
     }
 
@@ -253,19 +268,47 @@ public class UnitTest1
     public void Count()
     {
         SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
+        SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(2, node);
+        SimpleTreeNode<int> node2 = new SimpleTreeNode<int>(3, node);
+        SimpleTreeNode<int> node3 = new SimpleTreeNode<int>(4, node1);
+        SimpleTreeNode<int> node4 = new SimpleTreeNode<int>(5, node2);
+        SimpleTreeNode<int> node5 = new SimpleTreeNode<int>(6, node);
+
+        SimpleTree<int> tree = new SimpleTree<int>(node);
+
+        Assert.Equal(6, tree.Count());
+        Assert.Equal(3, tree.LeafCount());
+    }
+
+    [Fact]
+    public void CountTwoElements()
+    {
+        SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
         SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(2, null);
         SimpleTreeNode<int> node2 = new SimpleTreeNode<int>(3, null);
-        SimpleTreeNode<int> node3 = new SimpleTreeNode<int>(4, null);
-        SimpleTreeNode<int> node4 = new SimpleTreeNode<int>(5, null);
 
         SimpleTree<int> tree = new SimpleTree<int>(node);
         tree.AddChild(node, node1);
-        tree.AddChild(node1, node2);
-        tree.AddChild(node2, node3);
-        tree.AddChild(node3, node4);
+        tree.AddChild(node, node1);
 
+        Assert.Equal(3, tree.Count());
+        Assert.Equal(2, tree.LeafCount());
+    }
 
-        Assert.Equal(5, tree.Count());
+    [Fact]
+    public void CountRootNull()
+    {
+        SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
+        SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(2, null);
+        SimpleTreeNode<int> node2 = new SimpleTreeNode<int>(3, null);
+
+        SimpleTree<int> tree = new SimpleTree<int>(null);
+        tree.AddChild(null, node);
+        tree.AddChild(node, node1);
+        tree.AddChild(node, node2);
+
+        Assert.Equal(3, tree.Count());
+        Assert.Equal(2, tree.LeafCount());
     }
 
     [Fact]

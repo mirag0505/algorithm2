@@ -38,7 +38,6 @@ namespace AlgorithmsDataStructures2
             // ваш код добавления нового дочернего узла существующему ParentNode
 
             if (Root == null) Root = NewChild;
-
             if (ParentNode != null && ParentNode.Children == null)
             {
                 List<SimpleTreeNode<T>> NodeList = new List<SimpleTreeNode<T>>();
@@ -84,14 +83,9 @@ namespace AlgorithmsDataStructures2
             return CollectAllNodes(Root);
         }
 
-        static public int Compare(T a, T b)
-        {
-            return a.CompareTo(b);
-        }
-
         public void FindNodesRecursively(SimpleTreeNode<T> Node, T val, List<SimpleTreeNode<T>> listNodes)
         {
-            if (Compare(Node.NodeValue, val) == 0) listNodes.Add(Node);
+            if (Node.NodeValue.CompareTo(val) == 0) listNodes.Add(Node);
             if (Node.Children == null) return;
             foreach (SimpleTreeNode<T> children in Node.Children)
             {
@@ -116,12 +110,15 @@ namespace AlgorithmsDataStructures2
         public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent)
         {
             // ваш код перемещения узла вместе с его поддеревом -- 
+            if (OriginalNode == Root) return;
             if (NewParent != null && NewParent.Children == null)
             {
                 List<SimpleTreeNode<T>> NodeList = new List<SimpleTreeNode<T>> { OriginalNode };
                 NewParent.Children = NodeList;
             }
             if (NewParent != null && NewParent.Children is List<SimpleTreeNode<T>> && !NewParent.Children.Contains(OriginalNode)) NewParent.Children.Add(OriginalNode);
+            if (OriginalNode.Parent != null) OriginalNode.Parent.Children.Remove(OriginalNode);
+            if (OriginalNode.Parent != null && OriginalNode.Parent.Children.Count == 0) OriginalNode.Parent.Children = null;
         }
 
         public int CountNodesRecursively(SimpleTreeNode<T> Node, ref int leafCount)
