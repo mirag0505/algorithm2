@@ -43,7 +43,7 @@ namespace AlgorithmsDataStructures2
                 List<SimpleTreeNode<T>> NodeList = new List<SimpleTreeNode<T>>();
                 ParentNode.Children = NodeList;
             }
-            if (ParentNode != null) ParentNode.Children.Add(NewChild);
+            if (ParentNode != null && ParentNode.Children is List<SimpleTreeNode<T>> && !ParentNode.Children.Contains(NewChild)) ParentNode.Children.Add(NewChild);
 
             NewChild.Parent = ParentNode;
         }
@@ -121,54 +121,49 @@ namespace AlgorithmsDataStructures2
             if (OriginalNode.Parent != null && OriginalNode.Parent.Children.Count == 0) OriginalNode.Parent.Children = null;
         }
 
-        public int CountNodesRecursively(SimpleTreeNode<T> Node, ref int leafCount)
+        public int CountNodesRecursively(SimpleTreeNode<T> Node)
         {
-            leafCount++;
-            if (Node.Children == null) return leafCount;
-            foreach (SimpleTreeNode<T> children in Node.Children)
+            if (Node == null) return 0;
+
+            int count = 1;
+
+            if (Node.Children != null)
             {
-                CountNodesRecursively(children, ref leafCount);
+                foreach (SimpleTreeNode<T> child in Node.Children)
+                {
+                    count += CountNodesRecursively(child);
+                }
             }
 
-            return leafCount;
-        }
-
-        public int CountAllNodes(SimpleTreeNode<T> Node)
-        {
-            int leafCount = 0;
-            return CountNodesRecursively(Node, ref leafCount);
+            return count;
         }
 
         public int Count()
         {
             // количество всех узлов в дереве
             if (Root == null) return 0;
-            return CountAllNodes(Root);
+            return CountNodesRecursively(Root);
         }
 
-        public int LeafCountNodesRecursively(SimpleTreeNode<T> Node, ref int leafCount)
+        public int LeafCountNodesRecursively(SimpleTreeNode<T> Node)
         {
-            if (Node.Children == null) return ++leafCount;
+            if (Node == null) return 0;
+            if (Node.Children == null) return 1;
 
+            int count = 0;
             foreach (SimpleTreeNode<T> children in Node.Children)
             {
-                LeafCountNodesRecursively(children, ref leafCount);
+                count += LeafCountNodesRecursively(children);
             }
 
-            return leafCount;
-        }
-
-        public int LeafCountAllNodes(SimpleTreeNode<T> Node)
-        {
-            int count = 0;
-            return LeafCountNodesRecursively(Node, ref count);
+            return count;
         }
 
         public int LeafCount()
         {
             // количество листьев в дереве
             if (Root == null) return 0;
-            return LeafCountAllNodes(Root);
+            return LeafCountNodesRecursively(Root);
         }
 
     }

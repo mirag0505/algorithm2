@@ -72,6 +72,19 @@ public class UnitTest1
     }
 
     [Fact]
+    public void AddChildByRootWithoutAddChild()
+    {
+        SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
+        SimpleTree<int> tree = new SimpleTree<int>(node);
+        SimpleTreeNode<int> node1 = new SimpleTreeNode<int>(2, node);
+        SimpleTreeNode<int> node2 = new SimpleTreeNode<int>(2, node);
+        Assert.Equal(3, tree.Count());
+        Assert.Equal(2, tree.LeafCount());
+        Assert.Equal(node.Children[0], node1);
+        Assert.Equal(node.Children[1], node2);
+    }
+
+    [Fact]
     public void DeleteNodeOneLevel()
     {
         SimpleTreeNode<int> node = new SimpleTreeNode<int>(1, null);
@@ -289,7 +302,7 @@ public class UnitTest1
 
         SimpleTree<int> tree = new SimpleTree<int>(node);
         tree.AddChild(node, node1);
-        tree.AddChild(node, node1);
+        tree.AddChild(node, node2);
 
         Assert.Equal(3, tree.Count());
         Assert.Equal(2, tree.LeafCount());
