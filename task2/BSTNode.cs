@@ -115,66 +115,96 @@
             return FinMinMax(FromNode, FindMax);
         }
 
-        public BSTNode<T> RecursiveDeleteNodeByKey(BSTNode<T> Node, BSTFind<T> intermediate)
-        {
-            if (Node.LeftChild != null) return RecursiveDeleteNodeByKey(Node.LeftChild, intermediate);
-            //  Если мы находим лист, то его и надо поместить вместо удаляемого узла.
-            if (Node.LeftChild == null && Node.RightChild == null)
-            {
-                intermediate.Node.Parent.LeftChild = Node;
-                intermediate.Node.LeftChild.Parent = Node;
-                return null;
-            }
-            // Если мы находим узел, у которого есть только правый потомок, 
-            if (Node.LeftChild == null && Node.RightChild != null)
-            {
-                // то преемником берём этот узел, а вместо него помещаем его правого потомка.
-                intermediate.Node.Parent.RightChild = Node.RightChild;
-                intermediate.Node.RightChild.Parent = Node;
-                return null;
-            }
+        // public BSTNode<T> RecursiveDeleteNodeByKey(BSTNode<T> Node, BSTFind<T> intermediate)
+        // {
+        //     if (Node.LeftChild != null) return RecursiveDeleteNodeByKey(Node.LeftChild, intermediate);
+        //     //  Если мы находим лист, то его и надо поместить вместо удаляемого узла.
+        //     if (Node.LeftChild == null && Node.RightChild == null)
+        //     {
+        //         intermediate.Node.Parent.LeftChild = Node;
+        //         intermediate.Node.LeftChild.Parent = Node;
+        //         return null;
+        //     }
+        //     // Если мы находим узел, у которого есть только правый потомок, 
+        //     if (Node.LeftChild == null && Node.RightChild != null)
+        //     {
+        //         // то преемником берём этот узел, а вместо него помещаем его правого потомка.
+        //         intermediate.Node.Parent.RightChild = Node.RightChild;
+        //         intermediate.Node.RightChild.Parent = Node;
+        //         return null;
+        //     }
 
-            return null;
-        }
+        //     return null;
+        // }
+        // public bool DeleteNodeByKey(int key)
+        // {
+        //     // удаляем узел по ключу
+        //     var intermediateFind = this.FindNodeByKey(key);
+        //     if (!intermediateFind.NodeHasKey) return false; // если узел не найден
+
+        //     if (intermediateFind.Node.RightChild == null && intermediateFind.Node.LeftChild == null)
+        //     {
+        //         intermediateFind.Node.Parent.RightChild = null;
+        //         intermediateFind.Node.Parent.LeftChild = null;
+        //     }
+        //     if (intermediateFind.Node.LeftChild != null && intermediateFind.Node.RightChild == null)
+        //     {
+        //         intermediateFind.Node.Parent.LeftChild = intermediateFind.Node.LeftChild;
+        //         intermediateFind.Node.LeftChild.Parent = intermediateFind.Node.Parent;
+        //     }
+        //     if (intermediateFind.Node.RightChild != null && intermediateFind.Node.LeftChild == null)
+        //     {
+        //         intermediateFind.Node.Parent.RightChild = intermediateFind.Node.RightChild;
+        //         intermediateFind.Node.RightChild.Parent = intermediateFind.Node.Parent;
+        //     }
+        //     // если существует и левый и правый потомки
+        //     if (intermediateFind.Node.RightChild != null && intermediateFind.Node.LeftChild != null)
+        //     {
+        //         // надо взять правого потомка удаляемого узла,
+        //         RecursiveDeleteNodeByKey(intermediateFind.Node.RightChild, intermediateFind);
+        //         // что я здесь должен получить?
+        //         // или самый левый узел без потомков, берем его и заменяем удаленный
+        //         // или если левый пустой, а правый нет -- берём этот узел, а вместо него помещаем его правого потомка.
+        //     }
+
+        //     return true;
+        // }
+
         public bool DeleteNodeByKey(int key)
         {
-            // удаляем узел по ключу
-            var intermediateFind = this.FindNodeByKey(key);
-            if (!intermediateFind.NodeHasKey) return false; // если узел не найден
+            var nodeToDelete = FindNodeByKey(key);
+            if (!nodeToDelete.NodeHasKey) return false;
 
-            // если узер -- это рут
-            if (intermediateFind.Node == Root)
+            BSTNode<T> parent = nodeToDelete.Node.Parent;
+            BSTNode<T> leftChild = nodeToDelete.Node.LeftChild;
+            BSTNode<T> rightChild = nodeToDelete.Node.RightChild;
+
+            // Если у узла нет потомков или только один потомок
+            BSTNode<T> child = leftChild ?? rightChild;
+
+            if (leftChild == null || rightChild == null)
             {
-                Root = null;
+                if (parent == null) Root = child;
+
+                if (parent != null && parent.LeftChild == nodeToDelete.Node) parent.LeftChild = child;
+                else parent.RightChild = child;
+
+                if (child != null) child.Parent = parent;
                 return true;
             }
-            if (intermediateFind.Node.RightChild == null && intermediateFind.Node.LeftChild == null)
-            {
-                intermediateFind.Node.Parent.RightChild = null;
-                intermediateFind.Node.Parent.LeftChild = null;
-            }
-            if (intermediateFind.Node.LeftChild != null && intermediateFind.Node.RightChild == null)
-            {
-                intermediateFind.Node.Parent.LeftChild = intermediateFind.Node.LeftChild;
-                intermediateFind.Node.LeftChild.Parent = intermediateFind.Node.Parent;
-            }
-            if (intermediateFind.Node.RightChild != null && intermediateFind.Node.LeftChild == null)
-            {
-                intermediateFind.Node.Parent.RightChild = intermediateFind.Node.RightChild;
-                intermediateFind.Node.RightChild.Parent = intermediateFind.Node.Parent;
-            }
-            // если существует и левый и правый потомки
-            if (intermediateFind.Node.RightChild != null && intermediateFind.Node.LeftChild != null)
-            {
-                // надо взять правого потомка удаляемого узла,
-                RecursiveDeleteNodeByKey(intermediateFind.Node.RightChild, intermediateFind);
-                // что я здесь должен получить?
-                // или самый левый узел без потомков, берем его и заменяем удаленный
-                // или если левый пустой, а правый нет -- берём этот узел, а вместо него помещаем его правого потомка.
-            }
 
+            // Если у узла два потомка
+            BSTNode<T> successor = FinMinMax(rightChild, false);
+            nodeToDelete.Node.NodeKey = successor.NodeKey;
+            nodeToDelete.Node.NodeValue = successor.NodeValue;
+
+            if (successor.Parent.LeftChild == successor) successor.Parent.LeftChild = successor.RightChild;
+            else successor.Parent.RightChild = successor.RightChild;
+
+            if (successor.RightChild != null) successor.RightChild.Parent = successor.Parent;
             return true;
         }
+
 
         public int CountNodesRecursively(BSTNode<T> Node)
         {
@@ -191,6 +221,20 @@
         {
             if (Root == null) return 0;
             return CountNodesRecursively(Root);
+        }
+
+        public List<BSTNode<T>> GetAllNodes(BSTNode<T> Root)
+        {
+            List<BSTNode<T>> Nodes = new List<BSTNode<T>>(); // all nodes
+            Nodes.Add(Root);
+
+            if (Root.LeftChild != null)
+                Nodes.AddRange(GetAllNodes(Root.LeftChild));
+
+            if (Root.RightChild != null)
+                Nodes.AddRange(GetAllNodes(Root.RightChild));
+
+            return Nodes;
         }
 
     }
