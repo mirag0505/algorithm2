@@ -235,7 +235,7 @@ public class UnitTest1
         tree.AddKeyValue(2, 2);
         tree.AddKeyValue(6, 6);
 
-        Assert.Equal(true, tree.DeleteNodeByKey(6));
+        Assert.Equal(true, tree.DeleteNodeByKey(4));
         Assert.Equal(null, tree.GetRoot());
         Assert.Equal(0, tree.Count());
     }
@@ -249,8 +249,52 @@ public class UnitTest1
         tree.AddKeyValue(2, 2);
 
         Assert.Equal(true, tree.DeleteNodeByKey(2));
-        Assert.Equal(null, tree.GetRoot().LeftChild);
         Assert.Equal(1, tree.Count());
+        Assert.Equal(null, tree.GetRoot().LeftChild);
+    }
+
+    [Fact]
+    public void DeleteNodeByKeyOnlyRight()
+    {
+        BSTNode<int> node1 = new BSTNode<int>(4, 4, null);
+
+        BST<int> tree = new BST<int>(node1);
+        tree.AddKeyValue(6, 6);
+
+        Assert.Equal(true, tree.DeleteNodeByKey(6));
+        Assert.Equal(node1, tree.GetRoot());
+        Assert.Equal(null, tree.GetRoot().RightChild);
+        Assert.Equal(1, tree.Count());
+    }
+
+    [Fact]
+    public void DeleteNodeByKeyOnlyRighButWithTwoChild()
+    {
+        BSTNode<int> node1 = new BSTNode<int>(4, 4, null);
+
+        BST<int> tree = new BST<int>(node1);
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(9, 9);
+
+        Assert.Equal(true, tree.DeleteNodeByKey(6));
+        Assert.Equal(node1, tree.GetRoot());
+        Assert.Equal(9, tree.GetRoot().RightChild.NodeKey);
+        Assert.Equal(2, tree.Count());
+    }
+
+    [Fact]
+    public void DeleteNodeByKeyOnlyRighButWithTwoChildAndDeleteTHeLAst()
+    {
+        BSTNode<int> node1 = new BSTNode<int>(4, 4, null);
+
+        BST<int> tree = new BST<int>(node1);
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(9, 9);
+
+        Assert.Equal(true, tree.DeleteNodeByKey(9));
+        Assert.Equal(node1, tree.GetRoot());
+        Assert.Equal(6, tree.GetRoot().RightChild.NodeKey);
+        Assert.Equal(2, tree.Count());
     }
 
     [Fact]
@@ -265,19 +309,6 @@ public class UnitTest1
         Assert.Equal(false, tree.DeleteNodeByKey(22));
     }
 
-    [Fact]
-    public void DeleteNodeByKeyOnlyRight()
-    {
-        BSTNode<int> node1 = new BSTNode<int>(4, 4, null);
-
-        BST<int> tree = new BST<int>(node1);
-        tree.AddKeyValue(6, 6);
-
-        Assert.Equal(true, tree.DeleteNodeByKey(6));
-        Assert.Equal(null, tree.GetRoot().RightChild);
-        Assert.Equal(1, tree.Count());
-    }
-
 
     [Fact]
     public void DeleteNodeByKeyLeftAndRightWhenLeftDelete()
@@ -286,12 +317,15 @@ public class UnitTest1
 
         BST<int> tree = new BST<int>(node1);
         tree.AddKeyValue(6, 6);
-        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
 
-        Assert.Equal(true, tree.DeleteNodeByKey(6));
-        Assert.Equal(null, tree.GetRoot().RightChild);
-        // Assert.Equal(2, tree.GetRoot().LeftChild);
-        Assert.Equal(1, tree.Count());
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+
+        Assert.Equal(true, tree.DeleteNodeByKey(2));
+        Assert.Equal(3, tree.GetRoot().LeftChild.NodeKey);
     }
 
     [Fact]
@@ -301,10 +335,15 @@ public class UnitTest1
 
         BST<int> tree = new BST<int>(node1);
         tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
         tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
 
         Assert.Equal(true, tree.DeleteNodeByKey(6));
-        Assert.Equal(null, tree.GetRoot().RightChild);
-        Assert.Equal(1, tree.Count());
+        Assert.Equal(2, tree.GetRoot().LeftChild.NodeKey);
+        Assert.Equal(2, tree.Count());
     }
 }

@@ -4,19 +4,18 @@ class Program
 {
     static void Main(string[] args)
     {
-        BSTNode<int> node1 = new BSTNode<int>(8, 8, null);
+        BSTNode<int> node1 = new BSTNode<int>(4, 4, null);
 
         BST<int> tree = new BST<int>(node1);
-        tree.AddKeyValue(4, 4);
-        tree.AddKeyValue(12, 12);
 
-        var result1 = tree.GetRoot().NodeValue;
-        var result2 = tree.GetRoot().NodeKey;
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
 
-        var result3 = tree.GetRoot().LeftChild.NodeValue;
-        var result4 = tree.GetRoot().LeftChild.NodeKey;
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
 
-        var result5 = tree.GetRoot().RightChild.NodeValue;
-        var result6 = tree.GetRoot().RightChild.NodeKey;
+        tree.DeleteNodeByKey(2);
     }
 }
