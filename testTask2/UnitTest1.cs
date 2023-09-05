@@ -334,6 +334,229 @@ public class UnitTest1
     }
 
     [Fact]
+    public void DeleteNodeByKey1()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(1);
+
+        BST<int> bstreeCompareObj = new BST<int>(new BSTNode<int>(4, 4, null));
+        bstreeCompareObj.AddKeyValue(6, 6);
+        bstreeCompareObj.AddKeyValue(5, 5);
+        bstreeCompareObj.AddKeyValue(7, 7);
+
+        bstreeCompareObj.AddKeyValue(2, 2);
+        bstreeCompareObj.AddKeyValue(3, 3);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
+    [Fact]
+    public void DeleteNodeByKey2()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(3);
+
+        BST<int> bstreeCompareObj = new BST<int>(new BSTNode<int>(4, 4, null));
+        bstreeCompareObj.AddKeyValue(6, 6);
+        bstreeCompareObj.AddKeyValue(5, 5);
+        bstreeCompareObj.AddKeyValue(7, 7);
+
+        bstreeCompareObj.AddKeyValue(2, 2);
+        bstreeCompareObj.AddKeyValue(1, 1);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
+    public void DeleteNodeByKey3()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(2);
+
+        BST<int> bstreeCompareObj = new BST<int>(new BSTNode<int>(4, 4, null));
+        bstreeCompareObj.AddKeyValue(6, 6);
+        bstreeCompareObj.AddKeyValue(5, 5);
+        bstreeCompareObj.AddKeyValue(7, 7);
+
+        bstreeCompareObj.AddKeyValue(1, 1);
+        bstreeCompareObj.AddKeyValue(3, 3);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
+    public void DeleteNodeByKey4()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(6);
+
+        BST<int> bstreeCompareObj = new BST<int>(new BSTNode<int>(4, 4, null));
+        bstreeCompareObj.AddKeyValue(5, 5);
+        bstreeCompareObj.AddKeyValue(7, 7);
+
+        bstreeCompareObj.AddKeyValue(1, 1);
+        bstreeCompareObj.AddKeyValue(3, 3);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
+    public void DeleteNodeByKey7()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(7);
+
+        BST<int> bstreeCompareObj = new BST<int>(new BSTNode<int>(4, 4, null));
+        bstreeCompareObj.AddKeyValue(6, 6);
+        bstreeCompareObj.AddKeyValue(5, 5);
+
+        bstreeCompareObj.AddKeyValue(2, 2);
+        bstreeCompareObj.AddKeyValue(1, 1);
+        bstreeCompareObj.AddKeyValue(3, 3);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
+    public void DeleteNodeByKey8()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(5);
+
+        BST<int> bstreeCompareObj = new BST<int>(new BSTNode<int>(4, 4, null));
+        bstreeCompareObj.AddKeyValue(6, 6);
+        bstreeCompareObj.AddKeyValue(7, 7);
+
+        bstreeCompareObj.AddKeyValue(2, 2);
+        bstreeCompareObj.AddKeyValue(1, 1);
+        bstreeCompareObj.AddKeyValue(3, 3);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
+    [Fact]
     public void DeleteNodeByKey()
     {
         BST<int> tree = new BST<int>(new BSTNode<int>(100, 100, null));

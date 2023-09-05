@@ -125,7 +125,9 @@
             BSTNode<T> rightChild = nodeToDelete.Node.RightChild;
 
             // Если у узла нет потомков или только один потомок
-            BSTNode<T> child = leftChild ?? rightChild;
+            BSTNode<T> child;
+            if (leftChild != null) child = leftChild;
+            else child = rightChild;
 
             if (leftChild == null || rightChild == null)
             {
@@ -170,8 +172,7 @@
 
         public List<BSTNode<T>> GetAllNodes(BSTNode<T> Root)
         {
-            List<BSTNode<T>> Nodes = new List<BSTNode<T>>(); // all nodes
-            Nodes.Add(Root);
+            List<BSTNode<T>> Nodes = new List<BSTNode<T>> { Root }; // all nodes
 
             if (Root.LeftChild != null)
                 Nodes.AddRange(GetAllNodes(Root.LeftChild));
