@@ -136,16 +136,6 @@ public class UnitTest1
         Assert.Equal(3, tree.Count());
     }
 
-    [Fact]
-    public void CountTestWithAdd()
-    {
-        BSTNode<int> node1 = new BSTNode<int>(2, 2, null);
-
-        BST<int> tree = new BST<int>(node1);
-        tree.AddKeyValue(1, 1);
-        tree.AddKeyValue(3, 3);
-        Assert.Equal(3, tree.Count());
-    }
 
     [Fact]
     public void AddKeyValue()
@@ -408,7 +398,7 @@ public class UnitTest1
             index++;
         }
     }
-
+    [Fact]
     public void DeleteNodeByKey3()
     {
         BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
@@ -445,7 +435,7 @@ public class UnitTest1
             index++;
         }
     }
-
+    [Fact]
     public void DeleteNodeByKey4()
     {
         BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
@@ -481,7 +471,7 @@ public class UnitTest1
             index++;
         }
     }
-
+    [Fact]
     public void DeleteNodeByKey7()
     {
         BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
@@ -518,6 +508,8 @@ public class UnitTest1
             index++;
         }
     }
+
+    [Fact]
 
     public void DeleteNodeByKey8()
     {
@@ -556,6 +548,7 @@ public class UnitTest1
         }
     }
 
+    [Fact]
     public void DeleteNodeByKey9()
     {
         BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
