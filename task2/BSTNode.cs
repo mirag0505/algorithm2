@@ -161,13 +161,13 @@
 
                 if (successorNode != Node.RightChild)
                 {
-                    successorNode.Parent.LeftChild = null;
                     successorNode.Parent = Node.Parent;
+                    // successorNode.Parent.LeftChild = null;
 
-                    if (Node.Parent.LeftChild == Node) Node.Parent.LeftChild = successorNode;
-                    else Node.Parent.RightChild = successorNode;
+                    if (Node.Parent != null && Node.Parent.LeftChild == Node) Node.Parent.LeftChild = successorNode;
+                    else if (Node.Parent != null) Node.Parent.RightChild = successorNode;
 
-                    if (Node.LeftChild != null)
+                    if (Node.Parent != null && Node.LeftChild != null)
                     {
                         Node.LeftChild.Parent = successorNode;
                         successorNode.LeftChild = Node.LeftChild;
@@ -180,12 +180,12 @@
 
                 successorNode.Parent = Node.Parent;
 
-                if (Node.Parent.LeftChild == Node) Node.Parent.LeftChild = successorNode;
+                if (Node.Parent != null && Node.Parent.LeftChild == Node) Node.Parent.LeftChild = successorNode;
 
-                Node.Parent.RightChild = successorNode;
+                if (Node.Parent != null) Node.Parent.RightChild = successorNode;
 
-                successorNode.LeftChild = Node.LeftChild;
-                Node.LeftChild.Parent = successorNode;
+                if (Node.LeftChild != null) successorNode.LeftChild = Node.LeftChild;
+                if (Node.LeftChild != null) Node.LeftChild.Parent = successorNode;
 
 
             }
@@ -221,8 +221,8 @@
             {
                 Node.LeftChild.Parent = Node.Parent;
 
-                if (Node.Parent.LeftChild == Node) Node.Parent.LeftChild = Node.LeftChild;
-                else Node.Parent.RightChild = Node.RightChild;
+                if (Node.Parent != null && Node.Parent.LeftChild == Node) Node.Parent.LeftChild = Node.LeftChild;
+                else if (Node.Parent != null && Node.RightChild != null) Node.Parent.RightChild = Node.RightChild;
             }
 
             else
