@@ -556,6 +556,43 @@ public class UnitTest1
         }
     }
 
+    public void DeleteNodeByKey9()
+    {
+        BST<int> tree = new BST<int>(new BSTNode<int>(4, 4, null));
+        tree.AddKeyValue(6, 6);
+        tree.AddKeyValue(5, 5);
+        tree.AddKeyValue(7, 7);
+
+        tree.AddKeyValue(2, 2);
+        tree.AddKeyValue(1, 1);
+        tree.AddKeyValue(3, 3);
+        tree.DeleteNodeByKey(4);
+
+        BST<int> bstreeCompareObj = new BST<int>(null);
+        bstreeCompareObj.AddKeyValue(6, 6);
+        bstreeCompareObj.AddKeyValue(7, 7);
+
+        bstreeCompareObj.AddKeyValue(2, 2);
+        bstreeCompareObj.AddKeyValue(1, 1);
+        bstreeCompareObj.AddKeyValue(3, 3);
+
+        List<BSTNode<int>> bstreeObjList = new List<BSTNode<int>>();
+        bstreeObjList = tree.GetAllNodes(tree.GetRoot());
+
+        List<BSTNode<int>> bstreeCompareObjList = new List<BSTNode<int>>();
+        bstreeCompareObjList = bstreeCompareObj.GetAllNodes(bstreeCompareObj.GetRoot());
+
+        Assert.Equal(bstreeCompareObj.Count(), tree.Count());
+
+        int index = 0;
+        foreach (var element in bstreeCompareObjList)
+        {
+            Assert.Equal(element.NodeValue, bstreeObjList[index].NodeValue);
+            Assert.Equal(element.NodeKey, bstreeObjList[index].NodeKey);
+            index++;
+        }
+    }
+
     [Fact]
     public void DeleteNodeByKey()
     {
