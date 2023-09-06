@@ -134,9 +134,9 @@
                 if (parent == null) Root = child;
 
                 if (parent != null && parent.LeftChild == nodeToDelete.Node) parent.LeftChild = child;
-                else parent.RightChild = child;
+                else if (parent != null) parent.RightChild = child;
 
-                if (child != null) child.Parent = parent;
+                if (parent != null && child != null) child.Parent = parent;
                 return true;
             }
 
