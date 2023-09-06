@@ -48,42 +48,47 @@
         {
             return Root;
         }
+        public BSTFind<T> NodeIterator(BSTNode<T> node, int key, BSTFind<T> result)
+        {
+            BSTNode<T> current = node;
 
+            if (key == current.NodeKey)
+            {
+                result.Node = current;
+                result.NodeHasKey = true;
+                return result;
+            }
+            else if (key < current.NodeKey)
+            {
+                if (current.LeftChild == null)
+                {
+                    result.Node = current;
+                    result.ToLeft = true;
+                    return result;
+                }
+                current = current.LeftChild;
+            }
+            else
+            {
+                if (current.RightChild == null)
+                {
+                    result.Node = current;
+                    result.ToLeft = false;
+                    return result;
+                }
+                current = current.RightChild;
+            }
+
+            if (current != null) return NodeIterator(current, key, result);
+            return null;
+        }
         public BSTFind<T> FindNodeByKey(int key)
         {
             BSTFind<T> result = new BSTFind<T>();
-            BSTNode<T> current = Root;
-            while (current != null)
-            {
-                if (key == current.NodeKey)
-                {
-                    result.Node = current;
-                    result.NodeHasKey = true;
-                    return result;
-                }
-                else if (key < current.NodeKey)
-                {
-                    if (current.LeftChild == null)
-                    {
-                        result.Node = current;
-                        result.ToLeft = true;
-                        return result;
-                    }
-                    current = current.LeftChild;
-                }
-                else
-                {
-                    if (current.RightChild == null)
-                    {
-                        result.Node = current;
-                        result.ToLeft = false;
-                        return result;
-                    }
-                    current = current.RightChild;
-                }
-            }
+            if (Root != null) return NodeIterator(Root, key, result);
             return null;
         }
+
         public bool AddKeyValue(int key, T val)
         {
             BSTFind<T> findResult = FindNodeByKey(key);
