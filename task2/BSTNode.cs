@@ -173,5 +173,78 @@
             if (node == null) return 0;
             return 1 + CountNodes(node.LeftChild) + CountNodes(node.RightChild);
         }
+
+        public List<BSTNode<T>> WideAllNodes()
+        {
+            if (Root == null)
+                return new List<BSTNode<T>>();
+
+            var res = new List<BSTNode<T>>();
+            var queue = new Queue<BSTNode<T>>();
+            queue.Enqueue(Root);
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                res.Add(node);
+
+                if (node.LeftChild != null) queue.Enqueue(node.LeftChild);
+                if (node.RightChild != null) queue.Enqueue(node.RightChild);
+            }
+
+            return res;
+        }
+
+        public List<BSTNode<T>> DeepAllNodes(int order)
+        {
+            if (order < 0 || order > 2) return null;
+
+            switch (order)
+            {
+                case 0:
+                    return InOrder(Root);
+                case 1:
+                    return PostOrder(Root);
+                default:
+                    return PreOrder(Root);
+            }
+        }
+        List<BSTNode<T>> InOrder(BSTNode<T> node)
+        {
+            if (node == null) return new List<BSTNode<T>>();
+
+            var result = new List<BSTNode<T>>();
+            result.AddRange(InOrder(node.LeftChild));
+            result.Add(node);
+            result.AddRange(InOrder(node.RightChild));
+
+            return result;
+        }
+
+        List<BSTNode<T>> PreOrder(BSTNode<T> node)
+        {
+            if (node == null) return new List<BSTNode<T>>();
+
+            var result = new List<BSTNode<T>>();
+            result.Add(node);
+            result.AddRange(PreOrder(node.LeftChild));
+            result.AddRange(PreOrder(node.RightChild));
+
+            return result;
+        }
+
+        List<BSTNode<T>> PostOrder(BSTNode<T> node)
+        {
+            if (node == null) return new List<BSTNode<T>>();
+
+            var result = new List<BSTNode<T>>();
+            result.AddRange(PostOrder(node.LeftChild));
+            result.AddRange(PostOrder(node.RightChild));
+            result.Add(node);
+
+            return result;
+        }
+
+
+
     }
 }
