@@ -195,7 +195,8 @@
 
         public List<BSTNode<T>> DeepAllNodes(int order)
         {
-            if (order < 0 || order > 2) return null;
+            if (order < 0 || order > 2)
+                throw new InvalidOperationException("order can be only 0, 1, 2");
 
             switch (order)
             {
@@ -207,6 +208,7 @@
                     return PreOrder(Root);
             }
         }
+
         List<BSTNode<T>> InOrder(BSTNode<T> node)
         {
             if (node == null) return new List<BSTNode<T>>();
