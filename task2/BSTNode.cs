@@ -1,13 +1,13 @@
 ﻿namespace AlgorithmsDataStructures2
 {
-    public class BSTNodeBase
+    public class BSTNode
     {
         public int NodeKey; // ключ узла
-        public BSTNodeBase Parent; // родитель или null для корня
-        public BSTNodeBase LeftChild; // левый потомок
-        public BSTNodeBase RightChild; // правый потомок	
+        public BSTNode Parent; // родитель или null для корня
+        public BSTNode LeftChild; // левый потомок
+        public BSTNode RightChild; // правый потомок	
 
-        public BSTNodeBase(int key, BSTNodeBase parent)
+        public BSTNode(int key, BSTNode parent)
         {
             NodeKey = key;
             Parent = parent;
@@ -16,15 +16,13 @@
         }
     }
 
-    public class BSTNode<T> : BSTNodeBase
+    public class BSTNode<T> : BSTNode
     {
         public T NodeValue;
 
         public BSTNode(int key, T val, BSTNode<T> parent) : base(key, parent)
         {
             NodeValue = val;
-            // LeftChild = null;
-            // RightChild = null;
         }
     }
 
@@ -184,12 +182,12 @@
             return 1 + CountNodes((BSTNode<T>)node.LeftChild) + CountNodes((BSTNode<T>)node.RightChild);
         }
 
-        public List<BSTNodeBase> WideAllNodes()
+        public List<BSTNode> WideAllNodes()
         {
-            if (Root == null) return new List<BSTNodeBase>();
+            if (Root == null) return new List<BSTNode>();
 
-            var res = new List<BSTNodeBase>();
-            var queue = new Queue<BSTNodeBase>();
+            var res = new List<BSTNode>();
+            var queue = new Queue<BSTNode>();
             queue.Enqueue(Root);
             while (queue.Count > 0)
             {
@@ -203,7 +201,7 @@
             return res;
         }
 
-        public List<BSTNodeBase> DeepAllNodes(int order)
+        public List<BSTNode> DeepAllNodes(int order)
         {
             if (order < 0 || order > 2)
                 throw new InvalidOperationException("order can be only 0, 1, 2");
@@ -219,11 +217,11 @@
             }
         }
 
-        List<BSTNodeBase> InOrder(BSTNodeBase node)
+        List<BSTNode> InOrder(BSTNode node)
         {
-            if (node == null) return new List<BSTNodeBase>();
+            if (node == null) return new List<BSTNode>();
 
-            var result = new List<BSTNodeBase>();
+            var result = new List<BSTNode>();
             result.AddRange(InOrder(node.LeftChild));
             result.Add(node);
             result.AddRange(InOrder(node.RightChild));
@@ -231,11 +229,11 @@
             return result;
         }
 
-        List<BSTNodeBase> PreOrder(BSTNodeBase node)
+        List<BSTNode> PreOrder(BSTNode node)
         {
-            if (node == null) return new List<BSTNodeBase>();
+            if (node == null) return new List<BSTNode>();
 
-            var result = new List<BSTNodeBase>();
+            var result = new List<BSTNode>();
             result.Add(node);
             result.AddRange(PreOrder(node.LeftChild));
             result.AddRange(PreOrder(node.RightChild));
@@ -243,11 +241,11 @@
             return result;
         }
 
-        List<BSTNodeBase> PostOrder(BSTNodeBase node)
+        List<BSTNode> PostOrder(BSTNode node)
         {
-            if (node == null) return new List<BSTNodeBase>();
+            if (node == null) return new List<BSTNode>();
 
-            var result = new List<BSTNodeBase>();
+            var result = new List<BSTNode>();
             result.AddRange(PostOrder(node.LeftChild));
             result.AddRange(PostOrder(node.RightChild));
             result.Add(node);
