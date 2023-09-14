@@ -1,7 +1,6 @@
 using System.Diagnostics;
 namespace AlgorithmsDataStructures2;
 // namespace testTask2;
-
 public class UnitTest1
 {
     [Fact]
@@ -213,6 +212,15 @@ public class UnitTest1
         Assert.False(tree.DeleteNodeByKey(10));
     }
 
+    static void AssertList(List<BSTNodeBase> nodes, int count, List<int> values)
+    {
+        Assert.Equal(count, nodes.Count);
+        for (int i = 0; i < count; i++)
+        {
+            Assert.Equal(values[i], nodes[i].NodeKey);
+        }
+    }
+
     [Fact]
     public void WideAllNodes_EmptyTree_ShouldReturnEmptyList()
     {
@@ -375,14 +383,6 @@ public class UnitTest1
         AssertList(res, 11, new List<int> { 8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7 });
     }
 
-    static void AssertList<T>(List<BSTNode<T>> nodes, int count, List<int> values)
-    {
-        Assert.Equal(count, nodes.Count);
-        for (int i = 0; i < count; i++)
-        {
-            Assert.Equal(values[i], nodes[i].NodeKey);
-        }
-    }
 
     [Fact]
     public void DeepAllNodesInOrder_EmptyTree_ShouldReturnEmptyList()

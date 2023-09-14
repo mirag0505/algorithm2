@@ -1,20 +1,30 @@
 ﻿namespace AlgorithmsDataStructures2
 {
-    public class BSTNode<T>
+    public class BSTNodeBase
     {
         public int NodeKey; // ключ узла
-        public T NodeValue; // значение в узле
-        public BSTNode<T> Parent; // родитель или null для корня
-        public BSTNode<T> LeftChild; // левый потомок
-        public BSTNode<T> RightChild; // правый потомок	
+        public BSTNodeBase Parent; // родитель или null для корня
+        public BSTNodeBase LeftChild; // левый потомок
+        public BSTNodeBase RightChild; // правый потомок	
 
-        public BSTNode(int key, T val, BSTNode<T> parent)
+        public BSTNodeBase(int key, BSTNodeBase parent)
         {
             NodeKey = key;
-            NodeValue = val;
             Parent = parent;
             LeftChild = null;
             RightChild = null;
+        }
+    }
+
+    public class BSTNode<T> : BSTNodeBase
+    {
+        public T NodeValue;
+
+        public BSTNode(int key, T val, BSTNode<T> parent) : base(key, parent)
+        {
+            NodeValue = val;
+            // LeftChild = null;
+            // RightChild = null;
         }
     }
 
@@ -65,7 +75,7 @@
                     intermediate.ToLeft = true;
                     return intermediate;
                 }
-                intermediate.Node = intermediate.Node.LeftChild;
+                intermediate.Node = (BSTNode<T>)intermediate.Node.LeftChild;
             }
 
             if (key > intermediate.Node.NodeKey)
@@ -74,7 +84,7 @@
                 {
                     return intermediate;
                 }
-                intermediate.Node = intermediate.Node.RightChild;
+                intermediate.Node = (BSTNode<T>)intermediate.Node.RightChild;
             }
 
             return NodeIterator(key, intermediate);
@@ -111,12 +121,12 @@
             if (FindMax)
             {
                 if (FromNode.RightChild == null) return FromNode;
-                FromNode = FromNode.RightChild;
+                FromNode = (BSTNode<T>)FromNode.RightChild;
             }
             else
             {
                 if (FromNode.LeftChild == null) return FromNode;
-                FromNode = FromNode.LeftChild;
+                FromNode = (BSTNode<T>)FromNode.LeftChild;
             }
 
             return FinMinMax(FromNode, FindMax);
@@ -125,27 +135,27 @@
         public BSTNode<T> DeleteRecursion(BSTNode<T> root, int key)
         {
             if (root == null) return root;
-            if (key < root.NodeKey) root.LeftChild = DeleteRecursion(root.LeftChild, key);
-            else if (key > root.NodeKey) root.RightChild = DeleteRecursion(root.RightChild, key);
+            if (key < root.NodeKey) root.LeftChild = DeleteRecursion((BSTNode<T>)root.LeftChild, key);
+            else if (key > root.NodeKey) root.RightChild = DeleteRecursion((BSTNode<T>)root.RightChild, key);
             else if (root.LeftChild != null && root.RightChild != null)
             {
-                var average = FinMinMax(root.RightChild, false);
+                var average = FinMinMax((BSTNode<T>)root.RightChild, false);
                 root.NodeKey = average.NodeKey;
                 root.NodeValue = average.NodeValue;
-                root.RightChild = DeleteRecursion(root.RightChild, root.NodeKey);
+                root.RightChild = DeleteRecursion((BSTNode<T>)root.RightChild, root.NodeKey);
             }
             else
             {
                 if (root.LeftChild != null)
                 {
                     root.LeftChild.Parent = root.Parent;
-                    root = root.LeftChild;
+                    root = (BSTNode<T>)root.LeftChild;
                 }
 
                 else if (root.RightChild != null)
                 {
                     root.RightChild.Parent = root.Parent;
-                    root = root.RightChild;
+                    root = (BSTNode<T>)root.RightChild;
                 }
 
                 else root = null;
@@ -171,15 +181,15 @@
         private int CountNodes(BSTNode<T> node)
         {
             if (node == null) return 0;
-            return 1 + CountNodes(node.LeftChild) + CountNodes(node.RightChild);
+            return 1 + CountNodes((BSTNode<T>)node.LeftChild) + CountNodes((BSTNode<T>)node.RightChild);
         }
 
-        public List<BSTNode<T>> WideAllNodes()
+        public List<BSTNodeBase> WideAllNodes()
         {
-            if (Root == null) return new List<BSTNode<T>>();
+            if (Root == null) return new List<BSTNodeBase>();
 
-            var res = new List<BSTNode<T>>();
-            var queue = new Queue<BSTNode<T>>();
+            var res = new List<BSTNodeBase>();
+            var queue = new Queue<BSTNodeBase>();
             queue.Enqueue(Root);
             while (queue.Count > 0)
             {
@@ -193,7 +203,7 @@
             return res;
         }
 
-        public List<BSTNode<T>> DeepAllNodes(int order)
+        public List<BSTNodeBase> DeepAllNodes(int order)
         {
             if (order < 0 || order > 2)
                 throw new InvalidOperationException("order can be only 0, 1, 2");
@@ -209,11 +219,11 @@
             }
         }
 
-        List<BSTNode<T>> InOrder(BSTNode<T> node)
+        List<BSTNodeBase> InOrder(BSTNodeBase node)
         {
-            if (node == null) return new List<BSTNode<T>>();
+            if (node == null) return new List<BSTNodeBase>();
 
-            var result = new List<BSTNode<T>>();
+            var result = new List<BSTNodeBase>();
             result.AddRange(InOrder(node.LeftChild));
             result.Add(node);
             result.AddRange(InOrder(node.RightChild));
@@ -221,11 +231,11 @@
             return result;
         }
 
-        List<BSTNode<T>> PreOrder(BSTNode<T> node)
+        List<BSTNodeBase> PreOrder(BSTNodeBase node)
         {
-            if (node == null) return new List<BSTNode<T>>();
+            if (node == null) return new List<BSTNodeBase>();
 
-            var result = new List<BSTNode<T>>();
+            var result = new List<BSTNodeBase>();
             result.Add(node);
             result.AddRange(PreOrder(node.LeftChild));
             result.AddRange(PreOrder(node.RightChild));
@@ -233,11 +243,11 @@
             return result;
         }
 
-        List<BSTNode<T>> PostOrder(BSTNode<T> node)
+        List<BSTNodeBase> PostOrder(BSTNodeBase node)
         {
-            if (node == null) return new List<BSTNode<T>>();
+            if (node == null) return new List<BSTNodeBase>();
 
-            var result = new List<BSTNode<T>>();
+            var result = new List<BSTNodeBase>();
             result.AddRange(PostOrder(node.LeftChild));
             result.AddRange(PostOrder(node.RightChild));
             result.Add(node);
