@@ -176,8 +176,7 @@
 
         public List<BSTNode<T>> WideAllNodes()
         {
-            if (Root == null)
-                return new List<BSTNode<T>>();
+            if (Root == null) return new List<BSTNode<T>>();
 
             var res = new List<BSTNode<T>>();
             var queue = new Queue<BSTNode<T>>();
@@ -243,8 +242,5 @@
 
             return result;
         }
-
-
-
     }
 }

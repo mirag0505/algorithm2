@@ -987,11 +987,7 @@ public class UnitTest1
             tree.AddKeyValue(5, 5);
             tree.AddKeyValue(7, 7);
 
-
-
             var res = tree.DeepAllNodes(0);
-
-
 
             AssertList(res, 11, new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14 });
         }
