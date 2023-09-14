@@ -212,7 +212,7 @@ public class UnitTest1
         Assert.False(tree.DeleteNodeByKey(10));
     }
 
-    static void AssertList(List<BSTNodeBase> nodes, int count, List<int> values)
+    static void AssertList(List<AlgorithmsDataStructures2.BSTNodeBase> nodes, int count, List<int> values)
     {
         Assert.Equal(count, nodes.Count);
         for (int i = 0; i < count; i++)
