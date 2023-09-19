@@ -45,7 +45,7 @@ namespace AlgorithmsDataStructures2
         public int AddKey(int key)
         {
             // добавляем ключ в массив
-            int? index = this.FindKeyIndex(key);
+            int? index = FindKeyIndex(key);
             if (index <= 0)
             {
                 Tree[(int)-index] = key;
