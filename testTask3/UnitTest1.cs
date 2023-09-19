@@ -54,4 +54,17 @@ public class UnitTest1
         Assert.Equal(5, tree.FindKeyIndex(62));
         Assert.Equal(6, tree.FindKeyIndex(84));
     }
+
+    [Fact]
+    public void TestAddReturnMinus1()
+    {
+        aBST tree = new aBST(1);
+        Assert.Equal(0, tree.AddKey(50));
+        Assert.Equal(1, tree.AddKey(25));
+        Assert.Equal(2, tree.AddKey(75));
+        Assert.Equal(-1, tree.AddKey(62));
+        Assert.Equal(0, tree.FindKeyIndex(50));
+        Assert.Equal(1, tree.FindKeyIndex(25));
+        Assert.Equal(2, tree.FindKeyIndex(75));
+    }
 }
