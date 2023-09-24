@@ -22,7 +22,7 @@
     </PackageReference>
   </ItemGroup>
 
- <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../task4/task4.csproj" />
   </ItemGroup>
 </Project>
