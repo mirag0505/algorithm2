@@ -7,36 +7,35 @@ namespace AlgorithmsDataStructures2
 {
     public static class BalancedBST
     {
-        public static int[] GenerateBBSTArray(int[] a)
+        public static int GetMiddleIndex(int leftIndex, int rightIndex)
         {
-            // Сортировку по возрастанию выполняйте с помощью стандартной функции сортировки.
-            Array.Sort(a);
+            return (leftIndex + rightIndex) / 2;
+        }
 
-            int middleIndex = (int)a.Length / 2;
+        public static void RecursiveIterator(int startRange, int endRange, int currentIndex, int[] inputArray, int[] resultArray)
+        {
+            if (startRange > endRange || currentIndex >= inputArray.Length) return;
 
-            var length = (2 << (5 + 1)) - 1;
-            int[] resultArray = new int[length];
-            //2^(H+1)-1
-            // (два в степени(глубина плюс один)) минус один
-            // ?? это информация для чего? просто чтоб знать? или это нужно в задаче? и так понятно
+            int middleIndex = GetMiddleIndex(startRange, endRange);
 
-            // 1.Выбираем центральный элемент исходного отсортированного массива, 
-            // и делаем его корневым(на первом шаге помещаем его в нулевой элемент итогового массива).
-            var currentIndex = 0;
-            var b = a[middleIndex];
+            resultArray[currentIndex] = inputArray[middleIndex];
 
-            resultArray[currentIndex] = b;
+            int leftChildIndex = 2 * currentIndex + 1;
+            int rightChildIndex = 2 * currentIndex + 2;
 
-            // 2.Для левой части по отношению к выбранному элементу повторяем этот алгоритм 
-            //--индекс корневого элемента левой части будет равен индексу левого наследника корня из пункта 1.
+            RecursiveIterator(startRange, middleIndex - 1, leftChildIndex, inputArray, resultArray);
+            RecursiveIterator(middleIndex + 1, endRange, rightChildIndex, inputArray, resultArray);
+        }
 
-            var leftChildreIndex = 2 * currentIndex + 1;
-            resultArray[leftChildreIndex] = a[middleIndex - 1];
+        public static int[] GenerateBBSTArray(int[] inputArray)
+        {
+            Array.Sort(inputArray);
 
-            // 3.Для правой части по отношению к выбранному элементу повторяем этот алгоритм 
-            //--индекс корневого элемента правой части будет равен индексу правого наследника корня из пункта 1.
-            var rightChildreIndex = 2 * currentIndex + 2;
-            resultArray[rightChildreIndex] = a[middleIndex + 1];
+            if (inputArray.Length == 0) return new int[0];
+
+            int[] resultArray = new int[inputArray.Length];
+
+            RecursiveIterator(0, inputArray.Length - 1, 0, inputArray, resultArray);
 
             return resultArray;
         }
