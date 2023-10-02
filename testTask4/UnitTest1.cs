@@ -10,10 +10,11 @@ public class UnitTest1
         Assert.Equal("50,25,75", string.Join(",", array));
     }
 
+
     [Fact]
-    public void Test2()
+    public void Test4()
     {
-        int[] inputArray = { 3, 4, 2, 1, 5 };
+        int[] inputArray = { 1, 2, 3, 4, 5, 6, 7 };
         int[] array = BalancedBST.GenerateBBSTArray(inputArray);
         Assert.Equal("3,1,2,4,5", string.Join(",", array));
     }
