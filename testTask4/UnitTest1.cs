@@ -16,7 +16,7 @@ public class UnitTest1
     {
         int[] inputArray = { 1, 2, 3, 4, 5, 6, 7 };
         int[] array = BalancedBST.GenerateBBSTArray(inputArray);
-        Assert.Equal("3,1,2,4,5", string.Join(",", array));
+        Assert.Equal("4,2,6,1,3,5,7", string.Join(",", array));
     }
 
     [Fact]
