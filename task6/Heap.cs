@@ -7,114 +7,89 @@ namespace AlgorithmsDataStructures2
     {
 
         public int[] HeapArray; // хранит неотрицательные числа-ключи
-
+        public int count;
         public Heap() { HeapArray = null; }
 
         public void MakeHeap(int[] a, int depth)
         {
             // создаём массив кучи HeapArray из заданного
             // размер массива выбираем на основе глубины depth
-            // ...
 
             int tree_size = (2 << depth) - 1;
             HeapArray = new int[tree_size];
-            for (int i = 0; i < tree_size; i++)
-            {
-                if (a.Length > i) HeapArray[i] = a[i];
-                else
-                {
-                    HeapArray[i] = -1;
-                }
-            }
+            for (int i = 0; i < a.Length; i++) Add(a[i]);
         }
-        public int GetLength()
-        {
-            int count = 0;
-            for (int i = 0; i < HeapArray.Length; i++)
-            {
-                if (HeapArray[i] > -1) count++;
-            }
 
-            return count;
+        public void SiftingDown(int currentIndex)
+        {
+            int maxIndex = currentIndex;
+
+            int leftChildIndex = 2 * currentIndex + 1;
+            int rightChildIndex = 2 * currentIndex + 2;
+
+            if (leftChildIndex < count && HeapArray[leftChildIndex] > HeapArray[maxIndex]) maxIndex = leftChildIndex;
+            if (rightChildIndex < count && HeapArray[rightChildIndex] > HeapArray[maxIndex]) maxIndex = rightChildIndex;
+
+            if (maxIndex == currentIndex) return;
+
+            int temp = HeapArray[currentIndex];
+            HeapArray[currentIndex] = HeapArray[maxIndex];
+            HeapArray[maxIndex] = temp;
+
+            SiftingDown(maxIndex);
         }
 
         public int GetMax()
         {
             // вернуть значение корня и перестроить кучу
-            // -начинаем сдвигать элемент вниз по дереву(моделируем этот процесс движения по дереву с помощью индексов узла в массиве):
 
-            // -останавливаемся, когда у родителя будет больший ключ, а у двух наследников-- меньшие.
+            if (count == 0) return -1;
 
-            // если куча пуста
-            if (GetLength() == 0) return -1;
+            int root = HeapArray[0];
 
             // -выбираем самый последний существующий элемент массива(по сути, крайний правый на нижнем уровне);
+            int rightmost = HeapArray[count - 1];
+            HeapArray[count - 1] = 0;
             // -перемещаем его в корень;
-            for (int i = 0; i < HeapArray.Length; i++)
-            {
-                int rightmost;
+            HeapArray[0] = rightmost;
 
-                if (HeapArray[i] > -1)
-                {
-                    rightmost = HeapArray[i];
-                    HeapArray[0] = rightmost;
-                    break;
-                }
-            }
+            // если ниже текущего узла "максимальный" узел больше текущего, меняем местами текущий элемент с этим максимальным, и продолжаем данное действие;
+            SiftingDown(0);
 
-            //  если ниже текущего узла "максимальный" узел больше текущего, меняем местами текущий элемент с этим максимальным, и продолжаем данное действие;
-            int max = HeapArray[0];
-            for (int i = 1; i < HeapArray.Length; i++)
-            {
-                if (max < HeapArray[i])
-                {
-                    var temp = HeapArray[i - 1];
-                    HeapArray[i - 1] = HeapArray[i];
-                    HeapArray[i] = temp;
-
-                    max = HeapArray[i];
-                }
-                else break;
-                // -останавливаемся, когда у родителя будет больший ключ, а у двух наследников-- меньшие.
-            }
-
-            return HeapArray[0];
+            count--;
+            return root;
         }
 
-        // Аналогично выполняется и процесс вставки. 
-        // и затем поднимаем его вверх по дереву, останавливаясь в позиции, когда выше у родителя будет больший ключ,
-        // а ниже у обоих наследников -- меньшие
+        public void SiftingUp(int currentIndex, int parentIndex)
+        {
+            if (HeapArray[currentIndex] > HeapArray[parentIndex])
+            {
+                int temp = HeapArray[currentIndex];
+                HeapArray[currentIndex] = HeapArray[parentIndex];
+                HeapArray[parentIndex] = temp;
+            }
+
+            currentIndex = parentIndex;
+            parentIndex = (currentIndex - 1) / 2;
+
+            if (currentIndex > 0 && parentIndex >= 0) SiftingUp(currentIndex, parentIndex);
+        }
+
         public bool Add(int key)
         {
             // добавляем новый элемент key в кучу и перестраиваем её
-            if (GetLength() == HeapArray.Length) return false; // если куча вся заполнена
+            if (count == HeapArray.Length) return false; // если куча вся заполнена
 
-            int indexLastElement = -1;
-            for (int i = 0; i < HeapArray.Length; i++)
-            {
-                // Новый элемент помещаем в самый низ массива, в первый свободный слот,
-                if (HeapArray[i] == -1)
-                {
-                    indexLastElement = i;
-                    HeapArray[i] = key;
-                    break;
-                }
-            }
+            // Новый элемент помещаем в самый низ массива, в первый свободный слот
+            int indexEmptyElement = count;
+            HeapArray[indexEmptyElement] = key;
 
-            int min = HeapArray[indexLastElement];
-            for (int i = indexLastElement - 1; i > 0; i--)
-            {
-                if (min > HeapArray[i])
-                {
-                    var temp = HeapArray[i - 1];
-                    HeapArray[i - 1] = HeapArray[i];
-                    HeapArray[i] = temp;
+            // и затем поднимаем его вверх по дереву, останавливаясь в позиции, когда выше у родителя будет больший ключ, а ниже у обоих наследников -- меньшие.
+            int parentIndex = (indexEmptyElement - 1) / 2;
 
-                    min = HeapArray[i];
-                }
-                else break;
-            }
+            SiftingUp(indexEmptyElement, parentIndex);
 
+            count++;
 
             return true;
         }
