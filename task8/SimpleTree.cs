@@ -172,8 +172,7 @@ namespace AlgorithmsDataStructures2
         {
             List<T> eventTrees = new List<T>();
 
-            if (Root == null || Root.Children == null || Count() % 2 != 0) return eventTrees;
-            AddEvenTrees(Root, eventTrees);
+            if (Root != null && Count() % 2 == 0) AddEvenTrees(Root, eventTrees);
 
             return eventTrees;
         }
@@ -182,16 +181,16 @@ namespace AlgorithmsDataStructures2
         {
             if (Node.Children == null) return;
 
-            foreach (SimpleTreeNode<T> children in Root.Children)
+            foreach (SimpleTreeNode<T> child in Node.Children)
             {
-                int count = CountNodesRecursively(children);
+                int count = CountNodesRecursively(child);
 
                 if (count % 2 == 0)
                 {
-                    list.Add(children.Parent.NodeValue);
-                    list.Add(children.NodeValue);
+                    list.Add(child.Parent.NodeValue);
+                    list.Add(child.NodeValue);
                 }
-                AddEvenTrees(children, list);
+                AddEvenTrees(child, list);
             }
         }
 
