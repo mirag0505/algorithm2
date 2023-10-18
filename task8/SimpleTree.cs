@@ -177,7 +177,10 @@ namespace AlgorithmsDataStructures2
             {
                 int count = CountNodesRecursively(children);
 
-                if (count % 2 == 0) eventTrees.Add(children.NodeValue);
+                if (count % 2 == 0)
+                {
+                    eventTrees.Add(children.NodeValue);
+                }
                 else eventTrees.Add(Root.NodeValue);
             }
 
