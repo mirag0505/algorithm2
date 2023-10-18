@@ -180,7 +180,7 @@ namespace AlgorithmsDataStructures2
 
         public void AddEvenTrees(SimpleTreeNode<T> Node, List<T> list)
         {
-            if (Root.Children == null) return;
+            if (Node.Children == null) return;
 
             foreach (SimpleTreeNode<T> children in Root.Children)
             {
