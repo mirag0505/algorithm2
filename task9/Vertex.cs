@@ -97,26 +97,22 @@ namespace AlgorithmsDataStructures2
         // Алгоритм Depth-first search(dfs) работает так:
 
         // Реализуйте этот алгоритм с помощью стека.
-        public List<Vertex<T>> RecursionSearch(Vertex<T> currentVertex, Stack<Vertex<T>> stack, int VFrom, int VTo)
+        public Stack<Vertex<T>> RecursionSearch(Vertex<T> currentVertex, Stack<Vertex<T>> stack, int VFrom, int VTo, bool missThirtPoint)
         {
             // 2) Фиксируем вершину X как посещённую.
-            // Для этого в класс Vertex надо добавить, например, флажок hit,
-            // который принимает значение True, если вершина была таким образом посещёна.
             currentVertex.Hit = true;
 
             // 3) Помещаем вершину X в стек.
-            stack.Push(currentVertex);
+            if (!missThirtPoint) stack.Push(currentVertex);
 
             // 4) Ищем среди смежных вершин вершины X целевую вершину Б. Если она найдена, 
             // записываем её в стек и возвращаем сам стек как результат работы (путь из А в Б).
             for (int i = 0; i < max_vertex; i++)
             {
-                if (m_adjacency[VFrom, i] == 1 && i != VFrom && vertex[i] == vertex[VTo])
+                if (m_adjacency[VFrom, i] == 1 && i != VFrom && i == VTo)
                 {
                     stack.Push(vertex[VTo]);
-                    vertex[VTo].Hit = true;
-                    List<Vertex<T>> myList = new List<Vertex<T>>(stack);
-                    return myList;
+                    return stack;
                 }
             }
 
@@ -128,23 +124,24 @@ namespace AlgorithmsDataStructures2
                 if (m_adjacency[VFrom, i] == 1 && i != VFrom && vertex[i].Hit == false)
                 {
                     // Если такая вершина найдена, делаем её текущей X и переходим к п. 2.
-                    return RecursionSearch(vertex[i], stack, VFrom, VTo);
+                    VFrom = i;
+                    return RecursionSearch(vertex[i], stack, VFrom, VTo, false);
                 }
             }
 
             // 5) Если непосещённых смежных вершин более нету, удаляем из стека верхний элемент. 
-            stack.Pop();
+            if (stack.Count > 0) stack.Pop();
 
             // Если стек пуст, то прекращаем работу и информируем, что путь не найден. 
             if (stack.Count == 0)
             {
                 Console.WriteLine("The path isn't found");
-                return new List<Vertex<T>>();
+                return new Stack<Vertex<T>>();
             }
 
             // В противном случае делаем текущей вершиной X верхний элемент стека, помечаем его как посещённый, 
             // и после чего переходим к п. 4.
-            return RecursionSearch(stack.Pop(), stack, VFrom, VTo);
+            return RecursionSearch(stack.Peek(), stack, VFrom, VTo, true);
         }
         public List<Vertex<T>> DepthFirstSearch(int VFrom, int VTo)
         {
@@ -158,7 +155,11 @@ namespace AlgorithmsDataStructures2
             // а все вершины графа отмечаем как непосещённые(см.далее).
             for (int i = 0; i < count; i++) vertex[i].Hit = false;
             // 1) Выбираем текущую вершину X. Для начала работы это будет исходная вершина А.
-            return RecursionSearch(vertex[VFrom], stack, VFrom, VTo);
+            RecursionSearch(vertex[VFrom], stack, VFrom, VTo, false);
+
+            var list = new List<Vertex<T>>(stack);
+            list.Reverse();
+            return list;
         }
     }
 }
