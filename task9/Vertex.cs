@@ -161,5 +161,51 @@ namespace AlgorithmsDataStructures2
             list.Reverse();
             return list;
         }
+
+        public int[] BreadthRecursionSearch(int[] parents, int currentVertexIndex, Queue<int> queue, int VFrom, int VTo)
+        {
+            if (queue.Count == 0) return new int[this.max_vertex];
+
+            var indexElement = queue.Dequeue();
+            vertex[indexElement].Hit = true;
+
+            for (int i = 0; i < max_vertex; i++)
+            {
+                if (m_adjacency[indexElement, i] == 1 && i != indexElement && !vertex[i].Hit)
+                {
+                    queue.Enqueue(i);
+                    parents[i] = indexElement;
+                }
+
+                if (m_adjacency[indexElement, i] == 1 && i != indexElement && !vertex[i].Hit && i == VTo)
+                {
+                    return parents;
+                }
+            }
+
+            return BreadthRecursionSearch(parents, indexElement, queue, VFrom, VTo);
+        }
+        public List<Vertex<T>> BreadthFirstSearch(int VFrom, int VTo)
+        {
+
+            Queue<int> queue = new Queue<int>();
+            var parents = new int[this.max_vertex];
+            parents[VFrom] = -1;
+
+            for (int i = 0; i < count; i++) vertex[i].Hit = false;
+            vertex[VFrom].Hit = true;
+
+            queue.Enqueue(VFrom);
+
+            BreadthRecursionSearch(parents, VFrom, queue, VFrom, VTo);
+
+            List<Vertex<T>> list = new List<Vertex<T>>();
+            for (int i = VTo; i != -1; i = parents[i])
+            {
+                list.Add(this.vertex[i]);
+            }
+            list.Reverse();
+            return list;
+        }
     }
 }
