@@ -69,4 +69,46 @@ public class UnitTest1
         Assert.Equal('B', result[1].Value);
         Assert.Equal('C', result[2].Value);
     }
+
+    [Fact]
+    public void Test5()
+    {
+        SimpleGraph<char> simpleGraph = new SimpleGraph<char>(4);
+
+        simpleGraph.AddVertex('A');
+        simpleGraph.AddVertex('B');
+        simpleGraph.AddVertex('C');
+        simpleGraph.AddVertex('D');
+
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(1, 2);
+        simpleGraph.AddEdge(2, 3);
+        simpleGraph.AddEdge(1, 3);
+
+        var result = simpleGraph.BreadthFirstSearch(0, 3);
+        Assert.Equal('A', result[0].Value);
+        Assert.Equal('B', result[1].Value);
+        Assert.Equal('D', result[2].Value);
+    }
+
+    [Fact]
+    public void Test6()
+    {
+        SimpleGraph<char> simpleGraph = new SimpleGraph<char>(4);
+
+        simpleGraph.AddVertex('A');
+        simpleGraph.AddVertex('B');
+        simpleGraph.AddVertex('C');
+        simpleGraph.AddVertex('D');
+
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(1, 2);
+        simpleGraph.AddEdge(2, 3);
+        simpleGraph.AddEdge(1, 3);
+        simpleGraph.AddEdge(0, 3);
+
+        var result = simpleGraph.BreadthFirstSearch(0, 3);
+        Assert.Equal('A', result[0].Value);
+        Assert.Equal('D', result[1].Value);
+    }
 }

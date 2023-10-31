@@ -164,20 +164,20 @@ namespace AlgorithmsDataStructures2
 
         public int[] BreadthRecursionSearch(int[] parents, int currentVertexIndex, Queue<int> queue, int VFrom, int VTo)
         {
-            if (queue.Count == 0) return new int[this.max_vertex];
+            if (queue.Count == 0) return new int[max_vertex];
 
             var indexElement = queue.Dequeue();
             vertex[indexElement].Hit = true;
 
             for (int i = 0; i < max_vertex; i++)
             {
-                if (m_adjacency[indexElement, i] == 1 && i != indexElement && !vertex[i].Hit)
+                if (IsEdge(indexElement, i) && !vertex[i].Hit && !queue.Contains(i))
                 {
                     queue.Enqueue(i);
                     parents[i] = indexElement;
                 }
 
-                if (m_adjacency[indexElement, i] == 1 && i != indexElement && !vertex[i].Hit && i == VTo)
+                if (IsEdge(indexElement, i) && !vertex[i].Hit && i == VTo)
                 {
                     return parents;
                 }
@@ -187,12 +187,11 @@ namespace AlgorithmsDataStructures2
         }
         public List<Vertex<T>> BreadthFirstSearch(int VFrom, int VTo)
         {
-
             Queue<int> queue = new Queue<int>();
-            var parents = new int[this.max_vertex];
+            var parents = new int[max_vertex];
             parents[VFrom] = -1;
 
-            for (int i = 0; i < count; i++) vertex[i].Hit = false;
+            for (int i = 0; i < max_vertex; i++) if (this.vertex[i] != null) this.vertex[i].Hit = false;
             vertex[VFrom].Hit = true;
 
             queue.Enqueue(VFrom);
@@ -200,10 +199,8 @@ namespace AlgorithmsDataStructures2
             BreadthRecursionSearch(parents, VFrom, queue, VFrom, VTo);
 
             List<Vertex<T>> list = new List<Vertex<T>>();
-            for (int i = VTo; i != -1; i = parents[i])
-            {
-                list.Add(this.vertex[i]);
-            }
+            for (int i = VTo; i != -1; i = parents[i]) list.Add(vertex[i]);
+
             list.Reverse();
             return list;
         }
