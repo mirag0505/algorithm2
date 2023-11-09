@@ -207,42 +207,41 @@ namespace AlgorithmsDataStructures2
         public List<Vertex<T>> WeakVerticesRecursionSearch(List<Vertex<T>> listWeakVertices, int currentVertexIndex)
         {
             if (currentVertexIndex >= max_vertex) return listWeakVertices;
+            if (vertex[currentVertexIndex] == null || vertex[currentVertexIndex].Hit) return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
+
             vertex[currentVertexIndex].Hit = true;
+            bool isWeak = true; // Предполагаем, что вершина слабая, пока не найдем контр-пример
 
-            Stack<int> stackEdge = new Stack<int>();
-
-
+            var neighbors = new List<int>();
+            // Собираем всех соседей текущей вершины
             for (int i = 0; i < max_vertex; i++)
             {
-                // собираю в стек все найденные индексы смежных вершин
-                if (currentVertexIndex != i && IsEdge(currentVertexIndex, i) && !stackEdge.Contains(currentVertexIndex)) stackEdge.Push(i);
-            }
-
-            if (stackEdge.Count < 2 && !listWeakVertices.Contains(vertex[currentVertexIndex]))
-            {
-                listWeakVertices.Add(vertex[currentVertexIndex]);
-                return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
-            }
-
-            while (0 < stackEdge.Count)
-            {
-                var vertexIndex = stackEdge.Pop();
-                List<Vertex<T>> listFoundVertex = new List<Vertex<T>>();
-
-                foreach (var i in stackEdge)
+                if (currentVertexIndex != i && IsEdge(currentVertexIndex, i))
                 {
-                    if (IsEdge(vertexIndex, i))
+                    neighbors.Add(i);
+                }
+            }
+
+            // Проверяем, образуют ли соседи треугольник с текущей вершиной
+            for (int i = 0; i < neighbors.Count; i++)
+            {
+                for (int j = i + 1; j < neighbors.Count; j++)
+                {
+                    if (IsEdge(neighbors[i], neighbors[j]))
                     {
-                        listFoundVertex.Add(vertex[i]);
-                        return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
+                        isWeak = false; // Нашли треугольник, текущая вершина не слабая
+                        break;
                     }
                 }
-
-                if (listFoundVertex.Count == 0 && !listWeakVertices.Contains(vertex[vertexIndex])) listWeakVertices.Add(vertex[vertexIndex]);
+                if (!isWeak) break;
             }
 
+            if (isWeak) listWeakVertices.Add(vertex[currentVertexIndex]);
+
+            // Продолжаем поиск со следующей вершины
             return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
         }
+
 
         // Расширьте класс SimpleGraph из прошлого занятия методом WeakVertices(),
         // который возвращает список узлов, не входящих ни в один треугольник в графе.
