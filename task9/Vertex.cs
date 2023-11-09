@@ -204,5 +204,56 @@ namespace AlgorithmsDataStructures2
             list.Reverse();
             return list;
         }
+        public List<Vertex<T>> WeakVerticesRecursionSearch(List<Vertex<T>> listWeakVertices, int currentVertexIndex)
+        {
+            if (currentVertexIndex >= max_vertex) return listWeakVertices;
+            vertex[currentVertexIndex].Hit = true;
+
+            Stack<int> stackEdge = new Stack<int>();
+
+
+            for (int i = 0; i < max_vertex; i++)
+            {
+                // собираю в стек все найденные индексы смежных вершин
+                if (currentVertexIndex != i && IsEdge(currentVertexIndex, i) && !stackEdge.Contains(currentVertexIndex)) stackEdge.Push(i);
+            }
+
+            if (stackEdge.Count < 2 && !listWeakVertices.Contains(vertex[currentVertexIndex]))
+            {
+                listWeakVertices.Add(vertex[currentVertexIndex]);
+                return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
+            }
+
+            while (0 < stackEdge.Count)
+            {
+                var vertexIndex = stackEdge.Pop();
+                List<Vertex<T>> listFoundVertex = new List<Vertex<T>>();
+
+                foreach (var i in stackEdge)
+                {
+                    if (IsEdge(vertexIndex, i))
+                    {
+                        listFoundVertex.Add(vertex[i]);
+                        return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
+                    }
+                }
+
+                if (listFoundVertex.Count == 0 && !listWeakVertices.Contains(vertex[vertexIndex])) listWeakVertices.Add(vertex[vertexIndex]);
+            }
+
+            return WeakVerticesRecursionSearch(listWeakVertices, currentVertexIndex + 1);
+        }
+
+        // Расширьте класс SimpleGraph из прошлого занятия методом WeakVertices(),
+        // который возвращает список узлов, не входящих ни в один треугольник в графе.
+        public List<Vertex<T>> WeakVertices()
+        {
+            // возвращает список узлов вне треугольников
+            List<Vertex<T>> list = new List<Vertex<T>>();
+            for (int i = 0; i < max_vertex; i++) if (vertex[i] != null) vertex[i].Hit = false;
+
+            WeakVerticesRecursionSearch(list, 0);
+            return list;
+        }
     }
 }

@@ -111,4 +111,61 @@ public class UnitTest1
         Assert.Equal('A', result[0].Value);
         Assert.Equal('D', result[1].Value);
     }
+
+    [Fact]
+    public void WeakVertices()
+    {
+        SimpleGraph<char> simpleGraph = new SimpleGraph<char>(3);
+
+        simpleGraph.AddVertex('A');
+        simpleGraph.AddVertex('B');
+        simpleGraph.AddVertex('C');
+
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(0, 2);
+        simpleGraph.AddEdge(1, 0);
+        simpleGraph.AddEdge(1, 2);
+        simpleGraph.AddEdge(2, 0);
+        simpleGraph.AddEdge(2, 1);
+
+        var result = simpleGraph.WeakVertices();
+        Assert.Equal(0, result.Count());
+    }
+
+
+    [Fact]
+    public void WeakVertices2()
+    {
+        SimpleGraph<char> simpleGraph = new SimpleGraph<char>(2);
+
+        simpleGraph.AddVertex('A');
+        simpleGraph.AddVertex('B');
+
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(1, 0);
+
+        var result = simpleGraph.WeakVertices();
+        Assert.Equal('A', result[0].Value);
+        Assert.Equal('B', result[1].Value);
+    }
+
+    [Fact]
+    public void WeakVertices3()
+    {
+        SimpleGraph<char> simpleGraph = new SimpleGraph<char>(3);
+
+        simpleGraph.AddVertex('A');
+        simpleGraph.AddVertex('B');
+        simpleGraph.AddVertex('C');
+
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(1, 0);
+        simpleGraph.AddEdge(1, 2);
+        simpleGraph.AddEdge(2, 1);
+
+        var result = simpleGraph.WeakVertices();
+        Assert.Equal('A', result[0].Value);
+        Assert.Equal('C', result[1].Value);
+        Assert.Equal('B', result[2].Value);
+    }
 }
